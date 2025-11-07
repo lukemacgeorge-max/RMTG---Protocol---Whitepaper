@@ -1,0 +1,23 @@
+import json
+import hashlib
+from datetime import datetime
+
+def canonicalize_rmtg(message_dict):
+    canonical_dict = {k: v for k, v in message_dict.items() if k != 'sig'}
+    return json.dumps(canonical_dict, sort_keys=True, separators=(',', ':'))
+
+def generate_signature(message_dict):
+    return hashlib.sha256(canonicalize_rmtg(message_dict).encode()).hexdigest()
+
+def sign_rmtg_message(message_dict):
+    message_dict['sig'] = generate_signature(message_dict)
+    return message_dict
+
+def calculate_network_coherence(agent_coherences, rotation_state='R1/F0/cont'):
+    lambda_factor = 1.0
+    face_weights = [0.4, 0.3, 0.2, 0.1] if rotation_state.startswith('R1') else [0.25] * 4
+    face_coherences = [sum(ac * w for ac in agent_coherences) / len(agent_coherences) for w in face_weights]
+    return min(100.0, lambda_factor * sum(face_coherences[i] * face_weights[i] for i in range(4)) * 100)
+
+# Example
+print(f"Coherence: {calculate_network_coherence([100,100,98,100,96.5,100,98]):.1f}%")

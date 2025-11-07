@@ -1,0 +1,24 @@
+RMTG Tetrahedron (ASCII)
+
+     F0 (Verification)
+      /|\
+     / | \
+    /  |  \
+  F1---|---F2 (Symbolic)
+    \  |  /
+     \ | /
+      \|/
+      F3 (Integration)
+
+
+
+          F0
+         / | \
+        /  |  \
+       /   |   \
+     F1----|----F2
+       \   |   /
+        \  |  /
+         \ | /
+          F3
+    dΨ/dt = λ Σ(Fi · ωi)

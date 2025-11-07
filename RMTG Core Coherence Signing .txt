@@ -1,0 +1,15 @@
+# RMTG Core — Coherence + Signing
+import json, hashlib
+from datetime import datetime
+
+def canonicalize(msg):
+    c = {k: v for k, v in msg.items() if k != 'sig'}
+    return json.dumps(c, sort_keys=True, separators=(',', ':')).encode()
+
+def sign(msg):
+    return hashlib.sha256(canonicalize(msg)).hexdigest()
+
+def coherence(agents):
+    return sum(agents) / len(agents)  # Simplified for demo
+
+print("RMTG Ready | Coherence:", coherence([100,100,98,100,96.5,100,98]))
